@@ -33,6 +33,7 @@ dependencies:
   get: any
   url_launcher: any
   http: any
+  video_player: any
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -70,16 +71,12 @@ flutter:
     - assets/images/recuerdo3.jpg
     - assets/images/recuerdo4.jpg
     - assets/images/recuerdo5.jpg
-    - assets/images/cat1/
-    - assets/images/cat2/image1.jpg
-    - assets/images/cat2/image2.jpg
-    - assets/images/cat3/
-    - assets/images/cat4/
-    - assets/images/cat5/
-    - assets/images/cat6/
-    - assets/images/cat7/
-    - assets/images/cat8/image1.jpg
-    - assets/images/cat9/
+    - assets/images/menu/facebook.png
+    - assets/images/menu/instagram.png
+    - assets/images/menu/tiktok.png
+    - assets/images/menu/IGLESIA_TEPETZINGO_DRONE.mp4
+    - assets/images/menu/IGLESIA_TEZOYUCA_DRONE.mp4
+    - assets/images/menu/INTRO_3_DE_MAYO.mp4
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,4 +1,5 @@
 import 'package:ezahora/components/lista_categoria_component.dart';
+import 'package:ezahora/components/lista_categoria_solo_imagen_component.dart';
 import 'package:ezahora/constants/colors.dart';
 import 'package:ezahora/controllers/get_data_controller_negocios.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +32,9 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
     3: 'Mercados y Tianguis',
     4: 'Fiestas Tradicionales y Festivales',
     5: 'Carnaval',
-    6: 'Ecoturismo',
-    7: 'Hospedaje',
-    8: 'Restaurantes y Bares',
-    9: 'Gatronomía Ancestral',
+    6: 'Hospedaje',
+    7: 'Restaurantes y Bares',
+    8: 'Gatronomía Local',
   };
 
   Map<int, String> listaNegocios2= {
@@ -45,7 +45,22 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
   Map<int, String> listaNegocios8= {
     1: 'Chelodromo',
   };
+  String tituloResena1 = 'Explorando los Tesoros del Mercado en el Corazón del Pueblo';
+  String resena1 = 'El mercado municipal de Emiliano Zapata se encuentra ubicado en el corazón del pueblo, está establecido dentro de la ex hacienda San Vicente Zacualpan, está en funcionamiento desde hace más de 48 años. En el mercado podrás encontrar una gran variedad de productos como: carne roja y blanca, así como frutas y verduras de gran calidad. El mercado es ideal para adquirir toda la canasta básica a muy buenos precios.';
 
+
+  String tituloResena2 = 'Deslumbrantes Carnavales: Alegría, Color y Tradición';
+  String resena2 = 'El Carnaval de Emiliano Zapata año con año tiene para ti un espectacular programa de actividades y entretenimiento para toda la familia, dentro del marco del Carnaval Emiliano Zapata podrás disfrutar de:\n\n'
+  +'•	Quema de castillo\n' +
+  '•	Show de las viudas\n'+
+  '•	Tradicional Brinco del Chinelo\n'+
+  '•	Jaripeo.\n'+
+  'Sin duda, una gran experiencia a los que pueden visitar el lugar en estas fechas';
+
+  
+  String tituloResena3 = 'Sabores que despiertan emociones: un viaje de sabores irresistibles';
+  String resena3 = 'En Emiliano Zapata los antojitos mexicanos son un verdadero tesoro culinario que nos transporta a las raíces auténticas de la gastronomía mexicana. En cada esquina, se encuentran pequeños puestos y restaurantes que ofrecen una amplia variedad de platillos que deleitan los paladares locales y visitantes por igual.\n\n'+
+  'Los tacos, quesadillas, pancita, barbacoa, elotes, esquites, tostadas y, por supuesto el pozole son algunos de aquellos antojitos mexicanos que se encuentran presentes en nuestra localidad y son una verdadera expresión de la cultura y la tradición culinaria de México. Cada bocado es una experiencia que despierta los sentidos y hace honor a una de las cocinas más ricas y variadas del mundo.';
 
   @override
   void initState() {
@@ -83,48 +98,41 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
                         children: [
                           ListaCategoriaComponent(
                             contador: getDataControllerN.getDataModelNegociosCat1.value.negocios.length, 
-                            categoria: 1,
                             listaNegocios: getDataControllerN.getDataModelNegociosCat1.value.negocios,
                           ),
                           ListaCategoriaComponent(
                             contador: getDataControllerN.getDataModelNegociosCat2.value.negocios.length,
-                            categoria: 2,
                             listaNegocios: getDataControllerN.getDataModelNegociosCat2.value.negocios,
                           ),
-                          ListaCategoriaComponent(
-                            contador: getDataControllerN.getDataModelNegociosCat3.value.negocios.length,
+                          ListaCategoriaImagenComponent(
+                            contador: 0,
                             categoria: 3,
-                            listaNegocios: getDataControllerN.getDataModelNegociosCat3.value.negocios,
+                            tituloResena: tituloResena1,
+                            resena: resena1,
                           ),
                           ListaCategoriaComponent(
                             contador: getDataControllerN.getDataModelNegociosCat4.value.negocios.length,
-                            categoria: 4,
                             listaNegocios: getDataControllerN.getDataModelNegociosCat4.value.negocios,
                           ),
-                          ListaCategoriaComponent(
-                            contador: getDataControllerN.getDataModelNegociosCat5.value.negocios.length,
+                          ListaCategoriaImagenComponent(
+                            contador: 0,
                             categoria: 5,
-                            listaNegocios: getDataControllerN.getDataModelNegociosCat5.value.negocios,
-                          ),
-                          ListaCategoriaComponent(
-                            contador: getDataControllerN.getDataModelNegociosCat6.value.negocios.length,
-                            categoria: 6,
-                            listaNegocios: getDataControllerN.getDataModelNegociosCat6.value.negocios,
+                            tituloResena: tituloResena2,
+                            resena: resena2,
                           ),
                           ListaCategoriaComponent(
                             contador: getDataControllerN.getDataModelNegociosCat7.value.negocios.length,
-                            categoria: 7,
                             listaNegocios: getDataControllerN.getDataModelNegociosCat7.value.negocios,
                           ),
                           ListaCategoriaComponent(
                             contador: getDataControllerN.getDataModelNegociosCat8.value.negocios.length,
-                            categoria: 8,
                             listaNegocios: getDataControllerN.getDataModelNegociosCat8.value.negocios,
                           ),
-                          ListaCategoriaComponent(
-                            contador: getDataControllerN.getDataModelNegociosCat9.value.negocios.length,
+                          ListaCategoriaImagenComponent(
+                            contador: 4,
                             categoria: 9,
-                            listaNegocios: getDataControllerN.getDataModelNegociosCat9.value.negocios,
+                            tituloResena: tituloResena3,
+                            resena: resena3,
                           ),
                         ],
                       ) : const Center(
@@ -165,28 +173,6 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
     );
   }
 
-  // Widgets del appbar EZ
-  // appBarEZ1(){
-  //   return SliverAppBar(
-  //     elevation: 0,
-  //     title: tituloAppBar(),
-  //     titleSpacing: 0,
-  //     // centerTitle: true,
-  //     iconTheme: IconThemeData(
-  //       size: 35,
-  //       color: Palette.ezblue
-  //     ),
-  //     // pinned: true,
-  //     floating: true,
-  //     snap: false,
-  //     backgroundColor: Colors.white,
-  //     bottom: PreferredSize(
-  //       preferredSize: const Size.fromHeight(140),
-  //       child: listaCategoriaAppBar(),
-  //     )
-  //     // separator between appbar and body
-  //   );
-  // }
 
   tituloAppBar(){
     return Text(
@@ -198,39 +184,6 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
       ),
     );
   }
-
-  // listaCategoriaAppBar(){
-  //   return Container(
-  //     height: 124,
-  //     width: w,
-  //     color: Colors.white,
-  //     child: ListView.builder(
-  //       scrollDirection: Axis.horizontal,
-  //       itemCount: 9,
-  //       itemBuilder: (context, index) {
-  //         index++;
-  //         return Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 5.0),
-  //           child: InkWell(
-  //             onTap: () {
-  //               print(index);
-  //             },
-  //             child: SizedBox(
-  //               width: 80,
-  //               child: Column(
-  //                 children: [
-  //                   imagenesCategoria(index: index),
-  //                   SizedBox(height: 15,),
-  //                   textoCategoria(index: index)
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //     )
-  //   );
-  // }
 
   listaCategoriaAppBar(){
     return TabBar(

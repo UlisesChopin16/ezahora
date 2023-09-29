@@ -53,7 +53,22 @@ class Negocios {
         required this.linkDireccion,
     });
 
-    factory Negocios.fromJson(Map<String, dynamic> json) => Negocios(
+    factory Negocios.fromJson(Map<String, dynamic> json) {
+
+      // si json["linkDireccion"] es null entonces linkDireccion = 'No cuenta con link'
+      if(json["linkDireccion"] == null){
+        json["linkDireccion"] = 'No cuenta con link';
+      }
+      // si json["redesSociales"] no contiene un http entonces redesSociales = 'No cuenta con redes sociales'
+      if(!json["redesSociales"].contains('http')){
+        json["redesSociales"] = 'No cuenta con redes sociales';
+      }
+
+      if(json["redesSociales"] == null){
+        json["redesSociales"] = 'No cuenta con redes sociales';
+      }
+
+      return Negocios(
         idUsuario: json["idUsuario"],
         idCategoria: json["idCategoria"],
         nombreComercial: json["nombreComercial"],
@@ -66,7 +81,8 @@ class Negocios {
         redesSociales: json["redesSociales"],
         comentarios: json["comentarios"],
         linkDireccion: json["linkDireccion"],
-    );
+      );
+    } 
 
     Map<String, dynamic> toJson() => {
         "idUsuario": idUsuario,

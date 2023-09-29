@@ -1,7 +1,7 @@
 import 'package:ezahora/constants/colors.dart';
+import 'package:ezahora/views/image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class NegociosView extends StatefulWidget {
@@ -136,7 +136,7 @@ class _NegociosViewState extends State<NegociosView> {
                 ),
                 child: Icon(
                   Icons.arrow_back_rounded,
-                  color: Palette.ezBlue,
+                  color: Palette.ezPink,
                   size: 35,
                 )
               ),
@@ -155,12 +155,26 @@ class _NegociosViewState extends State<NegociosView> {
                       controller: pageController,
                       itemCount: 5,
                       itemBuilder: (context, index) {
+                        String rutaImagen = '${widget.direccionImagen}${quitarAcentos(widget.nombreNegocio)}/${quitarAcentos(widget.nombreNegocio)}';
                         index++;
-                        return Image.network(
-                          '${widget.direccionImagen}${quitarAcentos(widget.nombreNegocio)}/${quitarAcentos(widget.nombreNegocio)}$index.jpg',
-                          fit: BoxFit.cover,
-                          //  como se muestra la imagen después de que haya terminado de cargar?
-                  
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ImageView(
+                                  imageUrl: rutaImagen,
+                                  title: widget.nombreNegocio,
+                                  index: index,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Image.network(
+                            '$rutaImagen$index.jpg',
+                            fit: BoxFit.cover,
+                            //  como se muestra la imagen después de que haya terminado de cargar?
+                                          
+                          ),
                         );
                       },
                     ),
@@ -173,11 +187,11 @@ class _NegociosViewState extends State<NegociosView> {
                       child: SmoothPageIndicator(
                         controller: pageController,
                         count: 5,
-                        effect: const ExpandingDotsEffect(
+                        effect: ExpandingDotsEffect(
                           dotHeight: 10,
                           dotWidth: 10,
                           dotColor: Colors.white,
-                          activeDotColor: Colors.deepOrangeAccent,
+                          activeDotColor: Palette.ezPink
                         ),
                     
                       ),
@@ -290,42 +304,45 @@ class _NegociosViewState extends State<NegociosView> {
                 ),
                 const SizedBox(height: 10,),
                 // red social
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.facebook,
-                        color: Palette.ezPink,
-                        size: 20,
-                      ),
-                      SizedBox(width: 10,),
-                      Expanded(
-                        child: TextButton(
-                          onPressed: ()async{
-                            // Abrir el url con el linkRedSocial
-                            if (await canLaunchUrlString(widget.redSocial)){
-                              launchUrlString(widget.redSocial);                                  
-                            }
-                          },
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              widget.redSocial,
-                              style: TextStyle(
-                                color: Palette.ezPink,
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold
-                              )
+                if(widget.redSocial != 'No cuenta con redes sociales')
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.facebook,
+                          color: Palette.ezPink,
+                          size: 20,
+                        ),
+                        SizedBox(width: 10,),
+                        Expanded(
+                          child: TextButton(
+                            onPressed: ()async{
+                              // Abrir el url con el linkRedSocial
+                              if (await canLaunchUrlString(widget.redSocial)){
+                                launchUrlString(widget.redSocial);                                  
+                              }
+                            },
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                widget.redSocial,
+                                style: TextStyle(
+                                  color: Palette.ezPink,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold
+                                )
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+                      ],
+                    ),
+                  )
+                else 
+                  const SizedBox(height: 10,),
                 const SizedBox(height: 10,),
                 // descripcion
                 Padding(

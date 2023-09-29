@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 
 class ListaCategoriaComponent extends StatefulWidget {
 
-  final int categoria;
   final int contador;
 
   final List<Negocios>? listaNegocios;
@@ -16,7 +15,6 @@ class ListaCategoriaComponent extends StatefulWidget {
     Key? key, 
 
     // Aqui se reciben los parametros
-    required this.categoria,
     required this.contador,
     this.listaNegocios
 
@@ -102,7 +100,7 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
 
                     // Nombre del negocio
                     Positioned(
-                      top: 290,
+                      top: 270,
                       left: 20,
                       right: 20,
                       child: Text(
@@ -126,7 +124,7 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
                         children: [
                           Icon(
                             Icons.location_on,
-                            color: Palette.ezPink,
+                            color: Palette.ezblue,
                             size: 20,
                           ),
                           SizedBox(width: 10,),
@@ -134,7 +132,7 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
                             child: Text(
                               '${widget.listaNegocios![index].direccion}, ${widget.listaNegocios![index].colonia}, ${widget.listaNegocios![index].municipio}, ${widget.listaNegocios![index].estado}, ${widget.listaNegocios![index].codigoPostal}',
                               style: TextStyle(
-                                color: Palette.ezPink,
+                                color: Palette.ezblue,
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold
                               ),
@@ -192,24 +190,6 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
           )
         ),
       );
-    }else if(widget.listaNegocios![index].idCategoria == '3'){
-      return ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-        child: Container(
-          height: 250,
-          width: 200,
-          color: Colors.grey,
-          child: Image.network(
-            'https://turismo.zapatamorelos.gob.mx/APP1/Mercados/$nombreNegocio/${nombreNegocio}1.jpg',
-            height: 250,
-            width: 200,
-            fit: BoxFit.cover,
-          )
-        ),
-      );
     }else if(widget.listaNegocios![index].idCategoria == '4'){
       return ClipRRect(
         borderRadius: const BorderRadius.only(
@@ -222,42 +202,6 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
           color: Colors.grey,
           child: Image.network(
             'https://turismo.zapatamorelos.gob.mx/APP1/Fiestas/$nombreNegocio/${nombreNegocio}1.jpg',
-            height: 250,
-            width: 200,
-            fit: BoxFit.cover,
-          )
-        ),
-      );
-    }else if(widget.listaNegocios![index].idCategoria == '5'){
-      return ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-        child: Container(
-          height: 250,
-          width: 200,
-          color: Colors.grey,
-          child: Image.network(
-            'https://turismo.zapatamorelos.gob.mx/APP1/Carnaval/$nombreNegocio/${nombreNegocio}1.jpg',
-            height: 250,
-            width: 200,
-            fit: BoxFit.cover,
-          )
-        ),
-      );
-    }else if(widget.listaNegocios![index].idCategoria == '6'){
-      return ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-        child: Container(
-          height: 250,
-          width: 200,
-          color: Colors.grey,
-          child: Image.network(
-            'https://turismo.zapatamorelos.gob.mx/APP1/Ecoturismo/$nombreNegocio/${nombreNegocio}1.jpg',
             height: 250,
             width: 200,
             fit: BoxFit.cover,
@@ -294,21 +238,6 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
           color: Colors.grey,
           child: Image.network(
             'https://turismo.zapatamorelos.gob.mx/APP1/RestaurantesyBares/$nombreNegocio/${nombreNegocio}1.jpg',
-            height: 250,
-            width: 200,
-            fit: BoxFit.cover,
-          )
-        ),
-      );
-    }else if(widget.listaNegocios![index].idCategoria == '9'){
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          height: 250,
-          width: 200,
-          color: Colors.grey,
-          child: Image.network(
-            'https://turismo.zapatamorelos.gob.mx/APP1/Gastronomia/$nombreNegocio/${nombreNegocio}1.jpg',
             height: 250,
             width: 200,
             fit: BoxFit.cover,
