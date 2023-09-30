@@ -17,6 +17,18 @@ class GetDataControllerNegocios extends GetxController{
   var getDataModelNegociosCat7 = GetDataModelNegocios(negocios: []).obs;
   var getDataModelNegociosCat8 = GetDataModelNegocios(negocios: []).obs;
 
+  // lista de categorias
+  var lista = {
+    1: 'Atractivos Turísticos',
+    2: 'Tierra de la Cerámica',
+    3: 'Mercados y Tianguis',
+    4: 'Fiestas Tradicionales y Festivales',
+    5: 'Carnaval',
+    6: 'Hospedaje',
+    7: 'Restaurantes y Bares',
+    8: 'Gatronomía Local',
+  }.obs;
+
   rutaURL(String ruta) => 
     Uri.parse('https://androidexd.000webhostapp.com/loginphp/EZAhora/$ruta.php');
 
@@ -24,7 +36,7 @@ class GetDataControllerNegocios extends GetxController{
 
   getDataNegocios() async {
     isLoading.value = true;
-    
+    try{
       var response = await http.post(
         rutaURL('empresas'),
       );
@@ -52,7 +64,9 @@ class GetDataControllerNegocios extends GetxController{
           getDataModelNegociosCat8.value.negocios.add(getDataModelNegocios.value.negocios[i]);
         }
       }
-    
+    }catch(e){
+      print(e);
+    }
   }
 
   showLoading({String? nombre}) {

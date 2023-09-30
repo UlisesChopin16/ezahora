@@ -42,7 +42,7 @@ class _ListaCategoriaImagenComponentState extends State<ListaCategoriaImagenComp
     super.initState();
     
     if(widget.categoria == 3){
-      direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/Mercados/Mercados';
+      direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/Mercados/Mercado';
     }else if(widget.categoria == 5){
       direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/Carnaval/Carnaval';
     }else if(widget.categoria == 9){
@@ -58,33 +58,10 @@ class _ListaCategoriaImagenComponentState extends State<ListaCategoriaImagenComp
       slivers: [
 
         // titulo de la reseña
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-            child: Text(
-              widget.tituloResena,
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
+        tituloResena(),
 
         // reseña
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-            child: Text(
-              widget.resena,
-              textAlign: TextAlign.justify,
-              style: const TextStyle(
-                fontSize: 15,
-              ),
-            ),
-          ),
-        ),
+        textoResena(),
 
         SliverList.builder(
           itemCount: widget.contador,
@@ -126,6 +103,37 @@ class _ListaCategoriaImagenComponentState extends State<ListaCategoriaImagenComp
           },
         ),
       ],
+    );
+  }
+
+  tituloResena(){
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+        child: Text(
+          widget.tituloResena,
+          textAlign: TextAlign.left,
+          style: const TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  textoResena(){
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+        child: Text(
+          widget.resena,
+          textAlign: TextAlign.justify,
+          style: const TextStyle(
+            fontSize: 15,
+          ),
+        ),
+      ),
     );
   }
 

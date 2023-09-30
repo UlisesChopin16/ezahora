@@ -3,10 +3,14 @@ import 'package:ezahora/models/negocios_model.dart';
 import 'package:ezahora/views/negocios_view.dart';
 import 'package:flutter/material.dart';
 
+
+// tenemos que adaptarlo a una pequeña reseña
+// al momento de tocarlo lanzara la pagina de imagenes negocios para que vean mas grande las pagina
+
 class ListaCategoriaComponent extends StatefulWidget {
 
   final int contador;
-
+  final String resena;
   final List<Negocios>? listaNegocios;
 
   const ListaCategoriaComponent({ 
@@ -14,6 +18,7 @@ class ListaCategoriaComponent extends StatefulWidget {
 
     // Aqui se reciben los parametros
     required this.contador,
+    required this.resena,
     this.listaNegocios
 
   }) : super(key: key);
@@ -38,6 +43,8 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
           child: InkWell(
             onTap: () {
               setState(() {
+
+                // direccion de la imagen
                 if(widget.listaNegocios![index].idCategoria == '1'){
                   direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/Atractivos/';
                 }else if(widget.listaNegocios![index].idCategoria == '2'){

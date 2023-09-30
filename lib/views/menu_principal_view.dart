@@ -16,9 +16,19 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
 
   bool disable = false;
 
-  late final VideoPlayerController _controller1 = VideoPlayerController.asset('assets/images/menu/INTRO_3_DE_MAYO.mp4')
+
+  // creamos los controladores de los videos
+  late final VideoPlayerController _controller1 = 
+    // le damos la ruta del video
+    VideoPlayerController.asset('assets/images/menu/INTRO_3_DE_MAYO.mp4')
+
+    // le decimos que se repita el video
   ..setLooping(true)
-  ..initialize().then((_) {
+
+  // le decimos que se inicialice el video
+  ..initialize()
+  // cuando sea inicializado, se ejecutara el siguiente codigo
+  .then((_) {
     setState(() {
       // Si pageController esta en el index 0, se reproduce el video
       _controller1.play(); 
@@ -46,7 +56,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
   double h = 0;
   double w = 0;
 
-
+  // lista de las categorias
   Map<int, String> lista = {
     1: 'Atractivos Turísticos',
     2: 'Tierra de la Cerámica',
@@ -58,6 +68,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
     8: 'Gatronomía Local',
   };
 
+  // links de las redes sociales
   String facebook = 'https://www.facebook.com/AyuntamientoEZ?mibextid=ZbWKwL';
   String instagram = 'https://www.instagram.com/ayuntamientoemilianozapata/?igshid=NzZhOTFlYzFmZQ%3D%3D';
   String tikTok = 'https://tiktok.com/@emilianozapatamorelos?_t=8g4plQyblNV&_r=1';
@@ -115,210 +126,106 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
   Widget build(BuildContext context) {
     getScreenSize();
     return  Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            if(pageController.page == 0){
-              if(_controller1.value.isInitialized){
-                if(_controller1.value.isPlaying){
-                  _controller1.pause();
-                  disable = true;
-                }else{
-                  _controller1.play();
-                  disable = false;
-                }
-              }
-            }else if(pageController.page == 1){
-              if(_controller2.value.isInitialized){
-                if(_controller2.value.isPlaying){
-                  _controller2.pause();
-                  disable = true;
-                }else{
-                  _controller2.play();
-                  disable = false;
-                }
-              }
-            }else if(pageController.page == 2){
-              if(_controller3.value.isInitialized){
-                if(_controller3.value.isPlaying){
-                  _controller3.pause();
-                  disable = true;
-                }else{
-                  _controller3.play();
-                  disable = false;
-                }
-              }
-            }
-          });
-        },
-        child: disable ? Icon(Icons.play_arrow) : Icon(Icons.pause),
-        backgroundColor: Palette.ezblue,
-      ),
+      floatingActionButton: floatingPausedPlayButton(),
       body: CustomScrollView(
         shrinkWrap: true,
         slivers: [
-          
+
+          // appbar EZ
           appBarEZ(),
-    
-          SliverToBoxAdapter(
-            child: Container(
-              height: 400,
-              width: w,
-              color: Colors.purpleAccent,
-              child: Center(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: PageView(
-                        controller: pageController,
-                        children: [
-                          VideoPlayer(
-                            _controller1,
-                          ),
-                          VideoPlayer(
-                            _controller2,
-                          ),
-                        ],
-                      )
-                    ),
-                    
-                    Positioned(
-                      bottom: 10,
-                      left: 0,
-                      right: 0,
-                      height: 50,
-                      child: Center(
-                        child: SmoothPageIndicator(
-                          controller: pageController,
-                          count: 2,
-                          effect: ExpandingDotsEffect(
-                            dotHeight: 10,
-                            dotWidth: 10,
-                            dotColor: Colors.white,
-                            activeDotColor: Palette.ezblue,
-                          ),
 
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-
-          ),
+          // aqui va el contenido del carrusel
+          cuerpoCarrusel(),
         
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 30.0),
-              child: SizedBox(
-                width: w,
-                child: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'ANTECEDENTES HISTÓRICOS',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        SizedBox(height: 20,),
-                        Text(
-                          'El municipio mexicano de Emiliano Zapata ha experimentado una serie de cambios en su nombre a lo largo de los siglos. Originalmente, se llamaba Tzacualpan, cuyo significado es "sobre cosa tapada". En el siglo XIX, fue rebautizado como San Vicente Zacualpan en honor a los hacendados que eran propietarios de la región. Durante el siglo XX, específicamente en 1930, el gobierno mexicano promulgó una ley que prohibía los nombres relacionados con santos religiosos, lo que llevó a que el municipio cambiara su nombre a Emiliano Zapata, en honor al Caudillo del Sur.\n\nEl 19 de diciembre de 1932, bajo la dirección del gobernador constitucional de Morelos, Don Vicente Estrada Cajigal, se crearon dos nuevos municipios en la región: Atlatlahucan y Emiliano Zapata. El primer presidente municipal de Emiliano Zapata fue Apolinar Beltrán Díaz. Estos cambios de nombre reflejan la evolución histórica y política de la región, así como la influencia de figuras emblemáticas como Emiliano Zapata en la identidad local.',
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ),
-              ),
-            ),
-          ),
+          // aqui va el contenido de los antecedentes historicos
+          antecedentesHistoricos(),
 
           // aqui va el contenido del footer
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 30.0, bottom: 40.0),
-              child: Container(
-                height: 185,
-                width: w,
-                decoration: const BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      color: Colors.grey,
-                      width: 2
-                    )
-                  )
-                ),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // facebook
-                      botonRedSocial(
-                        linkRedSocial: facebook, 
-                        imagenRedSocial: 'assets/images/menu/facebook.png'
-                      ),
-
-                      SizedBox(width: 25,),
-
-                      // instagram
-                      botonRedSocial(
-                        linkRedSocial: instagram, 
-                        imagenRedSocial: 'assets/images/menu/instagram.png'
-                      ),
-
-                      SizedBox(width: 25,),
-
-                      // tiktok
-                      botonRedSocial(
-                        linkRedSocial: tikTok, 
-                        imagenRedSocial: 'assets/images/menu/tiktok.png'
-                      ),
-
-                    ],
-                  )
-                ),
-              ),
-            ),
-          )
+          footer(),
         ],
       ),
     );
   }
 
+  // boton para detener el video en el carrusel
+  floatingPausedPlayButton(){
+    return FloatingActionButton(
+      onPressed: () {
+        setState(() {
+
+          // verificamos en que posicion esta el carrousel
+          if(pageController.page == 0){
+
+            // verificamos si el video esta inicializado
+            if(_controller1.value.isInitialized){
+
+              // verificamos si el video esta reproduciendose
+              if(_controller1.value.isPlaying){
+
+                // si esta reproduciendose, lo pausamos
+                _controller1.pause();
+
+                // con esto cambiamos el icono del boton
+                disable = true;
+              }else{
+
+                // si no esta reproduciendose, lo reproducimos
+                _controller1.play();
+                disable = false;
+              }
+            }
+          }else if(pageController.page == 1){
+            if(_controller2.value.isInitialized){
+              if(_controller2.value.isPlaying){
+                _controller2.pause();
+                disable = true;
+              }else{
+                _controller2.play();
+                disable = false;
+              }
+            }
+          }else if(pageController.page == 2){
+            if(_controller3.value.isInitialized){
+              if(_controller3.value.isPlaying){
+                _controller3.pause();
+                disable = true;
+              }else{
+                _controller3.play();
+                disable = false;
+              }
+            }
+          }
+        });
+      },
+      child: disable ? Icon(Icons.play_arrow) : Icon(Icons.pause),
+      backgroundColor: Palette.ezblue,
+    );
+  }
 
   // Widgets del appbar EZ
   appBarEZ(){
     return SliverAppBar(
+
+      // le damos una elevacion de 0 para que no tenga sombra
       elevation: 0,
       title: Row(
         children: [
+          // logo EZ
           logoEZAppBar(),
+
+          // titulo EZ
           tituloAppBar(),
         ],
       ),
+
+      // lo dejamos fijo para que al hacer scroll no se mueva
       pinned: true,
       snap: false,
+
+      // le damos un color de fondo blanco
       backgroundColor: Colors.white,
+
+      // le damos un tamaño al appbar
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(140),
         child: listaCategoriaAppBar(),
@@ -354,23 +261,45 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
   }
 
   listaCategoriaAppBar(){
+    
+    // le damos un tamaño al appbar
     return Container(
       height: 124,
       width: w,
       color: Colors.white,
+
+      // creamos un listview.builder horizontal para mostrar las categorias con sus imagenes
       child: ListView.builder(
+
+        // le damos un scroll horizontal
         scrollDirection: Axis.horizontal,
+
+        // le damos cuantos items va a tener o construira el listview
         itemCount: lista.length,
+
+        // construimos el item
         itemBuilder: (context, index) {
+
+          // dejamos el index en 1 para que jale las imagenes correctamente
           index++;
+
+          // damos un pading o separacion entre el item y la pared, y entre cada item
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
+
+            // creamos un InkWell para que al dar click en el item nos lleve a la pagina de la categoria
             child: InkWell(
               onTap: () {
+
+                // al dar click en el item, nos lleva a la pagina de la categoria con el index de la categoria
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  ListadoCategoriasView(
                   pos: index,
                 ) ));
+
+                // pausamos los videos del carrusel
                 _controller1.pause();
+                _controller2.pause();
+                _controller3.pause();
               },
               child: SizedBox(
                 width: 80,
@@ -390,8 +319,10 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
   }
 
   imagenesCategoria({required int index}){
+
+    // generamos la imagen de la categoria a traves del index
     return Image.asset(
-      'assets/images/$index.png', // 'assets/images/logo.png
+      'assets/images/$index.png',
       width: 80,
       height: 60,
       fit: BoxFit.contain,
@@ -399,9 +330,15 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
   }
 
   textoCategoria({required int index}){
+
+    // generamos el texto de la categoria a traves del index
     return Text(
+
+      // le damos el texto a traves del index
       lista[index]!,
       textAlign: TextAlign.center,
+
+      // le damos un estilo al texto
       style: TextStyle(
         color: Palette.ezblue,
         fontSize: 9,
@@ -410,17 +347,210 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
     );
   }
 
+
+  // carrousel de videos
+  cuerpoCarrusel(){
+    // le damos un tamaño al carrusel
+    return SliverToBoxAdapter(
+      child: Container(
+        height: 400,
+        width: w,
+        color: Colors.purpleAccent,
+        child: Center(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+
+              // creamos un pageview para mostrar los videos
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: carruselVideos(),
+              ),
+              
+              // creamos un indicador de posicion para saber en que pagina esta el usuario
+              Positioned(
+                bottom: 10,
+                left: 0,
+                right: 0,
+                height: 50,
+                child: indicadorPosicion(),
+              )
+            ],
+          ),
+        ),
+      ),
+
+    );
+  }
+
+  carruselVideos(){
+
+    // creamos un pageview para mostrar los videos
+    return PageView(
+      // le damos el controlador del pageview para que sepa en que pagina esta
+      controller: pageController,
+      children: [
+
+        // le damos un video player al pageview
+        VideoPlayer(
+          _controller1,
+        ),
+
+        // le damos un video player al pageview
+        VideoPlayer(
+          _controller2,
+        ),
+      ],
+    );
+  }
+
+  indicadorPosicion(){
+
+    // creamos un indicador de posicion para saber en que pagina esta el usuario
+    return Center(
+      child: SmoothPageIndicator(
+
+        // con el controller le decimos en que pagina esta el usuario
+        controller: pageController,
+        count: 2,
+        effect: ExpandingDotsEffect(
+          dotHeight: 10,
+          dotWidth: 10,
+          dotColor: Colors.white,
+          activeDotColor: Palette.ezblue,
+        ),
+
+      ),
+    );
+  }
+
+  // antecedentes historicos
+  antecedentesHistoricos(){
+    return SliverToBoxAdapter(
+      child: Padding(
+
+        // le damos un padding para separarlo del carrusel solo de arriba
+        padding: const EdgeInsets.only(top: 30.0),
+        child: SizedBox(
+          width: w,
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: Column(
+
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  tituloAntecedentes(),
+                  const SizedBox(height: 20,),
+                  parrafoAntecedentes(),
+                ],
+              ),
+            )
+          ),
+        ),
+      ),
+    );
+  }
+
+  tituloAntecedentes(){
+    return const Text(
+      'ANTECEDENTES HISTÓRICOS',
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 25,
+        fontWeight: FontWeight.bold
+      ),
+    );
+  }
+
+  parrafoAntecedentes(){
+    return const Text(
+      'El municipio mexicano de Emiliano Zapata ha experimentado una serie de cambios en su nombre a lo largo de los siglos. Originalmente, se llamaba Tzacualpan, cuyo significado es "sobre cosa tapada". En el siglo XIX, fue rebautizado como San Vicente Zacualpan en honor a los hacendados que eran propietarios de la región. Durante el siglo XX, específicamente en 1930, el gobierno mexicano promulgó una ley que prohibía los nombres relacionados con santos religiosos, lo que llevó a que el municipio cambiara su nombre a Emiliano Zapata, en honor al Caudillo del Sur.\n\nEl 19 de diciembre de 1932, bajo la dirección del gobernador constitucional de Morelos, Don Vicente Estrada Cajigal, se crearon dos nuevos municipios en la región: Atlatlahucan y Emiliano Zapata. El primer presidente municipal de Emiliano Zapata fue Apolinar Beltrán Díaz. Estos cambios de nombre reflejan la evolución histórica y política de la región, así como la influencia de figuras emblemáticas como Emiliano Zapata en la identidad local.',
+      
+      // justificamos el texto
+      textAlign: TextAlign.justify,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 15,
+        fontWeight: FontWeight.normal
+      ),
+    );
+  }
+
+  footer(){
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 30.0, bottom: 40.0),
+        child: Container(
+          height: 185,
+          width: w,
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Colors.grey,
+                width: 2
+              )
+            )
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // facebook
+                botonRedSocial(
+                  linkRedSocial: facebook, 
+                  imagenRedSocial: 'assets/images/menu/facebook.png'
+                ),
+
+                SizedBox(width: 25,),
+
+                // instagram
+                botonRedSocial(
+                  linkRedSocial: instagram, 
+                  imagenRedSocial: 'assets/images/menu/instagram.png'
+                ),
+
+                SizedBox(width: 25,),
+
+                // tiktok
+                botonRedSocial(
+                  linkRedSocial: tikTok, 
+                  imagenRedSocial: 'assets/images/menu/tiktok.png'
+                ),
+
+              ],
+            )
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  // pedimos el link de la red social y la ruta imagen de la red social
   botonRedSocial({required String linkRedSocial, required String imagenRedSocial}){
     return InkWell(
+
+      // al dar click en el boton, se pausan los videos del carrusel y se abre el link de la red social
       onTap: () async {
         _controller1.pause();
         _controller2.pause();
         _controller3.pause();
-        // Abrir el url con el linkRedSocial
+        
+        // verificamos si se puede abrir el link de la red social
         if (await canLaunchUrlString(linkRedSocial)){
+          // si esto es true entonces lanzamos el link de la red social
           launchUrlString(linkRedSocial);                                  
         }
       },
+
+      // creamos la imagen de la red social
       child: Image.asset(
         imagenRedSocial,
         width: 45,
@@ -429,9 +559,5 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
       ),
     );
   }
-
-
-
-  // cuerpo del custom scroll view
 
 }
