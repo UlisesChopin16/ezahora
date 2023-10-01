@@ -28,15 +28,15 @@ class Negocios {
     String idUsuario;
     String idCategoria;
     String nombreComercial;
-    String telefono;
-    String direccion;
-    String colonia;
-    String municipio;
-    String codigoPostal;
-    String estado;
-    String redesSociales;
+    String? telefono;
+    String? direccion;
+    String? colonia;
+    String? municipio;
+    String? codigoPostal;
+    String? estado;
+    String? redesSociales;
     String comentarios;
-    String linkDireccion;
+    String? linkDireccion;
 
     Negocios({
         required this.idUsuario,

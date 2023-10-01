@@ -8,12 +8,16 @@ class ImageView extends StatefulWidget {
   final String imageUrl;
   final String title;
   final int index;
+  final String? categoria;
+  final String? resena;
 
 
   const ImageView({ 
     required this.imageUrl,
     required this.title,
     required this.index,
+    this.categoria,
+    this.resena,
     Key? key
   }) : super(key: key);
 
@@ -33,7 +37,9 @@ class _ImageViewState extends State<ImageView> {
     // inicializamos el controlador
     pageController = PageController(
       initialPage: widget.index,
-      viewportFraction: 1
+      viewportFraction: 1,
+      // keepPage sirve para que no se pierda la pagina en la que se encuentra
+      keepPage: true
     );
   }
 
@@ -42,14 +48,32 @@ class _ImageViewState extends State<ImageView> {
     return Scaffold(
       appBar: appBar(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            construccionImagenes(),
-            const SizedBox(height: 20),
-            indicadorImagenNegocio(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              construccionImagenes(),
+              const SizedBox(height: 10,),
+              indicadorImagenNegocio(),
+              if(widget.categoria == '1' || widget.categoria == '4')
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    widget.resena!,
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black.withOpacity(0.7)
+                    )
+                  ),
+                )
+              else
+                const SizedBox(),
+              SizedBox(height: 60,)
+            ],
+          ),
         ),
       ),
     );
@@ -69,13 +93,37 @@ class _ImageViewState extends State<ImageView> {
       width: double.maxFinite,
       child: PageView.builder(
         controller: pageController,
-        itemCount: 5,
+        itemCount: widget.categoria == '1' || widget.categoria == '4' ? 2 : 5,
         itemBuilder: (context, index) {
           index++;
           return Image.network(
             '${widget.imageUrl}$index.jpg',
-              width: double.maxFinite,
-              height: 400,
+            width: double.maxFinite,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                height: 400,
+                width: double.maxFinite,
+                color: Colors.grey,
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/logo.png',
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.contain,
+                    ),
+                    Text(
+                      'Imagen no disponible',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black.withOpacity(0.7)
+                      )
+                    )
+                  ],
+                ),
+              );
+            },
             fit: BoxFit.contain,
           );
         },
@@ -87,7 +135,7 @@ class _ImageViewState extends State<ImageView> {
   indicadorImagenNegocio(){
     return SmoothPageIndicator(
       controller: pageController,
-      count: 5,
+      count: widget.categoria == '1' || widget.categoria == '4' ? 2 : 5,
       effect: ExpandingDotsEffect(
         dotHeight: 10,
         dotWidth: 10,
@@ -98,3 +146,5 @@ class _ImageViewState extends State<ImageView> {
   }
 
 }
+
+// flutter build apk --release

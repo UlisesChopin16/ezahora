@@ -1,5 +1,6 @@
 import 'package:ezahora/components/lista_categoria_component.dart';
 import 'package:ezahora/components/lista_categoria_solo_imagen_component.dart';
+import 'package:ezahora/components/lista_categoria_solo_info_component.dart';
 import 'package:ezahora/constants/colors.dart';
 import 'package:ezahora/controllers/get_data_controller_negocios.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,8 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
   // instancia del controlador de datos
   final getDataControllerN = Get.put(GetDataControllerNegocios());
 
+
+  ScrollController scrollController = ScrollController();
 
   double h = 0;
   double w = 0;
@@ -51,6 +54,7 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
     super.initState();
     // obtener los datos de los negocios al entrar a la pagina
     getDataControllerN.getDataNegocios();
+
   }
 
   // metodo para obtener el tamaño de la pantalla
@@ -73,13 +77,8 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
           animationDuration: const Duration(milliseconds: 300),
           child: Scaffold(
             backgroundColor: Colors.grey[200],
-            body: CustomScrollView(
-              shrinkWrap: true,
-              slivers: [
-                appBarEZ(),
-                cuerpoListado(),
-              ]
-            ),
+            appBar: appBarEZ(),
+            body: cuerpoListado(),
           ),
         );
       }
@@ -88,19 +87,21 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
 
 
   // Widgets del appbar EZ
-  appBarEZ(){
-    return SliverAppBar(
+  AppBar appBarEZ(){
+    return AppBar(
       elevation: 4,
       title: tituloAppBar(),
       titleSpacing: 0,
       // centerTitle: true,
-      iconTheme: IconThemeData(
-        size: 35,
-        color: Palette.ezblue
+      leading: IconButton(
+        onPressed: () => Navigator.of(context).pop(false),
+        icon: const Icon(
+          Icons.arrow_back_rounded,
+          size: 35,
+        ),
+        color: Palette.ezblue,
       ),
-      pinned: true,
       // floating: false,
-      snap: false,
       backgroundColor: Colors.white,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(130),
@@ -173,53 +174,60 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
 
 
   cuerpoListado(){
-    return SliverFillRemaining(
-      child: SizedBox(
-        height: h,
-        child: !getDataControllerN.isLoading.value ? vistaListadoCategoria() 
-          : const Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
-    );
+
+    if(!getDataControllerN.isLoading.value){
+      return vistaListadoCategoria();
+    }else{
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
   }
 
   vistaListadoCategoria(){
     return TabBarView(
       children: [
-        ListaCategoriaComponent(
+        ListaCategoriaInfoComponent(
+          scrollController: scrollController,
           contador: getDataControllerN.getDataModelNegociosCat1.value.negocios.length, 
           listaNegocios: getDataControllerN.getDataModelNegociosCat1.value.negocios,
         ),
         ListaCategoriaComponent(
+          scrollController: scrollController,
           contador: getDataControllerN.getDataModelNegociosCat2.value.negocios.length,
           listaNegocios: getDataControllerN.getDataModelNegociosCat2.value.negocios,
         ),
         ListaCategoriaImagenComponent(
+          scrollController: scrollController,
           contador: 4,
           categoria: 3,
           tituloResena: tituloResena1,
           resena: resena1,
         ),
-        ListaCategoriaComponent(
+        ListaCategoriaInfoComponent(
+          scrollController: scrollController,
           contador: getDataControllerN.getDataModelNegociosCat4.value.negocios.length,
           listaNegocios: getDataControllerN.getDataModelNegociosCat4.value.negocios,
         ),
         ListaCategoriaImagenComponent(
+          scrollController: scrollController,
           contador: 4,
           categoria: 5,
           tituloResena: tituloResena2,
           resena: resena2,
         ),
         ListaCategoriaComponent(
+          scrollController: scrollController,
           contador: getDataControllerN.getDataModelNegociosCat7.value.negocios.length,
           listaNegocios: getDataControllerN.getDataModelNegociosCat7.value.negocios,
         ),
         ListaCategoriaComponent(
+          scrollController: scrollController,
           contador: getDataControllerN.getDataModelNegociosCat8.value.negocios.length,
           listaNegocios: getDataControllerN.getDataModelNegociosCat8.value.negocios,
         ),
         ListaCategoriaImagenComponent(
+          scrollController: scrollController,
           contador: 4,
           categoria: 9,
           tituloResena: tituloResena3,

@@ -53,7 +53,7 @@ class _NegociosViewState extends State<NegociosView> {
   // Metodo para agrandar el tamaño del titulo del negocio
   double agrandar(){
     // si el nombre del negocio es mayor a 28 caracteres, agrandamos el tamaño del titulo
-    if(widget.nombreNegocio.length > 28){
+    if(widget.nombreNegocio.length > 32){
       return 100;
     }else{
       return 60;
@@ -250,20 +250,49 @@ class _NegociosViewState extends State<NegociosView> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ImageView(
-
                   // mandamos la ruta de la imagen, el nombre del negocio y la posicion de la imagen
                   imageUrl: rutaImagen,
                   title: widget.nombreNegocio,
-                  index: index,
+                  index: (index - 1),
                 ),
               ),
             );
           },
 
           // imagen que se muestra en el carrusel
-          child: Image.network(
-            '$rutaImagen$index.jpg',
-            fit: BoxFit.cover,
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.grey,
+            child: Image.network(
+              '$rutaImagen$index.jpg',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/logo.png',
+                      width: 100,
+                      height: 100,
+                      color: Colors.grey,
+                      colorBlendMode: BlendMode.color,
+                      fit: BoxFit.contain,
+                    ),
+                    Text(
+                      'Imagen no disponible',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black.withOpacity(0.7)
+                      )
+                    )
+                  ],
+                );
+              },
+            ),
           ),
         );
       },

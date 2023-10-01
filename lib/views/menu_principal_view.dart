@@ -15,6 +15,7 @@ class MenuPrincipal extends StatefulWidget {
 class _MenuPrincipalState extends State<MenuPrincipal> {
 
   bool disable = false;
+  bool disappear = false;
 
 
   // creamos los controladores de los videos
@@ -73,42 +74,46 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
   String instagram = 'https://www.instagram.com/ayuntamientoemilianozapata/?igshid=NzZhOTFlYzFmZQ%3D%3D';
   String tikTok = 'https://tiktok.com/@emilianozapatamorelos?_t=8g4plQyblNV&_r=1';
 
+  String urlAvisoPrivacidad = 'https://ezahora.com/avisoPrivacidad.html';
+
 
   @override
   void initState() {
     super.initState();
     pageController.addListener(() {
-      if(pageController.page == 0){
-        if(_controller1.value.isInitialized){
-          if(_controller1.value.isPlaying){
-            _controller1.pause();
-            disable = true;
-          }else{
-            _controller1.play();
-            disable = false;
+      setState(() {
+        if(pageController.page == 0){
+          if(_controller1.value.isInitialized){
+            if(_controller1.value.isPlaying){
+              _controller1.pause();
+              disable = true;
+            }else{
+              _controller1.play();
+              disable = false;
+            }
+          }
+        }else if(pageController.page == 1){
+          if(_controller2.value.isInitialized){
+            if(_controller2.value.isPlaying){
+              _controller2.pause();
+              disable = true;
+            }else{
+              _controller2.play();
+              disable = false;
+            }
+          }
+        }else if(pageController.page == 2){
+          if(_controller3.value.isInitialized){
+            if(_controller3.value.isPlaying){
+              _controller3.pause();
+              disable = true;
+            }else{
+              _controller3.play();
+              disable = false;
+            }
           }
         }
-      }else if(pageController.page == 1){
-        if(_controller2.value.isInitialized){
-          if(_controller2.value.isPlaying){
-            _controller2.pause();
-            disable = true;
-          }else{
-            _controller2.play();
-            disable = false;
-          }
-        }
-      }else if(pageController.page == 2){
-        if(_controller3.value.isInitialized){
-          if(_controller3.value.isPlaying){
-            _controller3.pause();
-            disable = true;
-          }else{
-            _controller3.play();
-            disable = false;
-          }
-        }
-      }
+      });
     });
   }
 
@@ -202,6 +207,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
     );
   }
 
+
   // Widgets del appbar EZ
   appBarEZ(){
     return SliverAppBar(
@@ -250,7 +256,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
     return Padding( 
       padding: const EdgeInsets.only(top: 10.0, left: 10.0),
       child: Text(
-        'EzAhora',
+        'EZAhora',
         style: TextStyle(
           color: Palette.ezblue,
           fontSize: 20,
@@ -289,17 +295,35 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
 
             // creamos un InkWell para que al dar click en el item nos lleve a la pagina de la categoria
             child: InkWell(
-              onTap: () {
+              onTap: () async {
+
+                setState(() {
+                  if(_controller1.value.isPlaying){
+                    _controller1.pause();
+                  }
+                    
+                  if(_controller2.value.isPlaying){
+                    _controller2.pause();
+                  }
+
+                  if(_controller3.value.isPlaying){
+                    _controller3.pause();
+                  }
+
+                  disappear = true;
+                });
 
                 // al dar click en el item, nos lleva a la pagina de la categoria con el index de la categoria
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  ListadoCategoriasView(
-                  pos: index,
-                ) ));
+                final data = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>  ListadoCategoriasView(
+                      pos: index,
+                    ) 
+                  )
+                );
 
-                // pausamos los videos del carrusel
-                _controller1.pause();
-                _controller2.pause();
-                _controller3.pause();
+                disappear = data;
+                setState(() {});
               },
               child: SizedBox(
                 width: 80,
@@ -387,22 +411,32 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
   }
 
   carruselVideos(){
-
     // creamos un pageview para mostrar los videos
     return PageView(
       // le damos el controlador del pageview para que sepa en que pagina esta
       controller: pageController,
       children: [
+        if(!disappear)
+          // le damos un video player al pageview
+          if(_controller1.value.isInitialized)
+            VideoPlayer(
+              _controller1,
+            )
+          else
+            const SizedBox()
+        else
+          const SizedBox(),
 
+        if(!disappear)
         // le damos un video player al pageview
-        VideoPlayer(
-          _controller1,
-        ),
-
-        // le damos un video player al pageview
-        VideoPlayer(
-          _controller2,
-        ),
+          if(_controller2.value.isInitialized)
+            VideoPlayer(
+              _controller2,
+            )
+          else
+            const SizedBox()
+        else
+          const SizedBox(),
       ],
     );
   }
@@ -427,6 +461,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
     );
   }
 
+
   // antecedentes historicos
   antecedentesHistoricos(){
     return SliverToBoxAdapter(
@@ -447,6 +482,8 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
                   tituloAntecedentes(),
                   const SizedBox(height: 20,),
                   parrafoAntecedentes(),
+                  const SizedBox(height: 20,),
+                  imagenToponimia(),
                 ],
               ),
             )
@@ -482,12 +519,21 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
     );
   }
 
+  imagenToponimia(){
+    return Image.asset(
+      'assets/images/toponimia.png',
+      width: 200,
+      height: 200,
+      fit: BoxFit.contain,
+    );
+  }
+
+
   footer(){
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0, bottom: 40.0),
-        child: Container(
-          height: 185,
+        padding: const EdgeInsets.only(top: 30.0,),
+        child: Container( 
           width: w,
           decoration: const BoxDecoration(
             border: Border(
@@ -497,42 +543,65 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
               )
             )
           ),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // facebook
-                botonRedSocial(
-                  linkRedSocial: facebook, 
-                  imagenRedSocial: 'assets/images/menu/facebook.png'
-                ),
-
-                SizedBox(width: 25,),
-
-                // instagram
-                botonRedSocial(
-                  linkRedSocial: instagram, 
-                  imagenRedSocial: 'assets/images/menu/instagram.png'
-                ),
-
-                SizedBox(width: 25,),
-
-                // tiktok
-                botonRedSocial(
-                  linkRedSocial: tikTok, 
-                  imagenRedSocial: 'assets/images/menu/tiktok.png'
-                ),
-
-              ],
-            )
+          child: Padding(
+            padding: const EdgeInsets.only(
+              right: 10.0,
+              left: 10.0,
+              top: 30.0,
+            ),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  filaRedesSociales(),
+                  const SizedBox(height: 30,),
+                  imagenFooter(),
+                  const SizedBox(height: 30,),
+                  copyright(),
+                  // const SizedBox(height: 10,),
+                  avisoPrivacidad(
+                    urlAvisoPrivacidad: urlAvisoPrivacidad,
+                  ),
+                ],
+              )
+            ),
           ),
         ),
       ),
     );
   }
 
+  filaRedesSociales(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // facebook
+        botonRedSocial(
+          linkRedSocial: facebook, 
+          imagenRedSocial: 'assets/images/menu/facebook.png'
+        ),
 
+        SizedBox(width: 25,),
+
+        // instagram
+        botonRedSocial(
+          linkRedSocial: instagram, 
+          imagenRedSocial: 'assets/images/menu/instagram.png'
+        ),
+
+        SizedBox(width: 25,),
+
+        // tiktok
+        botonRedSocial(
+          linkRedSocial: tikTok, 
+          imagenRedSocial: 'assets/images/menu/tiktok.png'
+        ),
+
+      ],
+    );
+  }
   // pedimos el link de la red social y la ruta imagen de la red social
   botonRedSocial({required String linkRedSocial, required String imagenRedSocial}){
     return InkWell(
@@ -556,6 +625,58 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
         width: 45,
         height: 45,
         fit: BoxFit.contain,
+        color: Colors.grey,
+        // colorBlendMode: BlendMode.srcATop,
+      ),
+    );
+  }
+
+  imagenFooter(){
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 80.0),
+      child: Image.asset(
+        'assets/images/logo_ayuntamiento_sin_fondo.png',
+        fit: BoxFit.contain, 
+      ),
+    );
+  }
+
+  copyright(){
+    return const Text(
+      '© 2023 Dirección de Turismo del H. Ayuntamiento de Emiliano Zapata, Morelos.',
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: Colors.grey,
+        fontSize: 16,
+        fontWeight: FontWeight.bold
+      ),
+    );
+  }
+
+  avisoPrivacidad({
+    required String urlAvisoPrivacidad,
+  }){
+    return TextButton(
+      onPressed: () async {
+        // al dar click en el boton, se pausan los videos del carrusel y se abre el link del aviso de privacidad
+        _controller1.pause();
+        _controller2.pause();
+        _controller3.pause();
+
+        // verificamos si se puede abrir el link de la red social
+        if (await canLaunchUrlString(urlAvisoPrivacidad)){
+          // si esto es true entonces lanzamos el link de la red social
+          launchUrlString(urlAvisoPrivacidad);                                  
+        }
+      },
+      child: const Text(
+        'Aviso de Privacidad',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.grey,
+          fontSize: 16,
+          decoration: TextDecoration.underline
+        ),
       ),
     );
   }
