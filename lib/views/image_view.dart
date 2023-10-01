@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezahora/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -96,39 +97,65 @@ class _ImageViewState extends State<ImageView> {
         itemCount: widget.categoria == '1' || widget.categoria == '4' ? 2 : 5,
         itemBuilder: (context, index) {
           index++;
-          return Image.network(
-            '${widget.imageUrl}$index.jpg',
-            width: double.maxFinite,
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                height: 400,
-                width: double.maxFinite,
-                color: Colors.grey,
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/logo.png',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.contain,
-                    ),
-                    Text(
-                      'Imagen no disponible',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black.withOpacity(0.7)
-                      )
-                    )
-                  ],
-                ),
-              );
-            },
-            fit: BoxFit.contain,
+          return image(
+            rutaImagen: '${widget.imageUrl}$index.jpg',
           );
         },
       ),
     );
+  }
+
+  image({
+    required String rutaImagen,
+  }){
+    return CachedNetworkImage(
+      imageUrl: rutaImagen,
+      imageBuilder: contenedorImagen,
+      placeholder: (context, url) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      errorWidget: errorCarga,
+    );
+  }
+
+  Widget contenedorImagen(BuildContext context, ImageProvider<Object> imageProvider) {
+    return Container(
+      height: 350,
+      width: double.maxFinite,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: imageProvider,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+
+  Widget errorCarga(BuildContext context, String url, Object error) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset(
+          'assets/images/logo.png',
+          width: 100,
+          height: 100,
+          color: Colors.grey,
+          colorBlendMode: BlendMode.color,
+          fit: BoxFit.contain,
+        ),
+        Text(
+          'Imagen no disponible',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black.withOpacity(0.7)
+          )
+        )
+      ],
+    );
+
   }
 
 

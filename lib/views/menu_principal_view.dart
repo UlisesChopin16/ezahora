@@ -647,8 +647,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
       textAlign: TextAlign.center,
       style: TextStyle(
         color: Colors.grey,
-        fontSize: 16,
-        fontWeight: FontWeight.bold
+        fontSize: 15,
       ),
     );
   }

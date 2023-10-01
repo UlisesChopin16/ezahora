@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezahora/constants/colors.dart';
 import 'package:ezahora/views/image_view.dart';
 import 'package:flutter/material.dart';
@@ -263,41 +264,66 @@ class _NegociosViewState extends State<NegociosView> {
           child: Container(
             width: 100,
             height: 100,
-            color: Colors.grey,
-            child: Image.network(
-              '$rutaImagen$index.jpg',
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/logo.png',
-                      width: 100,
-                      height: 100,
-                      color: Colors.grey,
-                      colorBlendMode: BlendMode.color,
-                      fit: BoxFit.contain,
-                    ),
-                    Text(
-                      'Imagen no disponible',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black.withOpacity(0.7)
-                      )
-                    )
-                  ],
-                );
-              },
+            color: const Color.fromRGBO(158, 158, 158, 1),
+            child: image(
+              rutaImagen: '$rutaImagen$index.jpg',
             ),
           ),
         );
       },
     );
   }
+
+  image({
+    required String rutaImagen,
+  }){
+    return CachedNetworkImage(
+      imageUrl: rutaImagen,
+      imageBuilder: contenedorImagen,
+      placeholder: (context, url) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      errorWidget: errorCarga,
+    );
+  }
+
+  Widget contenedorImagen(BuildContext context, ImageProvider<Object> imageProvider) {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: imageProvider,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+
+  Widget errorCarga(BuildContext context, String url, Object error) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset(
+          'assets/images/logo.png',
+          width: 100,
+          height: 100,
+          color: Colors.grey,
+          colorBlendMode: BlendMode.color,
+          fit: BoxFit.contain,
+        ),
+        Text(
+          'Imagen no disponible',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black.withOpacity(0.7)
+          )
+        )
+      ],
+    );
+
+  } 
 
   indicadorImagenNegocio(){
     return Center(
@@ -538,10 +564,33 @@ class _NegociosViewState extends State<NegociosView> {
             launchUrlString(widget.linkDireccion);                                  
           }
         },
-        child: Image.network(
-          '${widget.direccionImagen}${quitarAcentos(widget.nombreNegocio)}/Mapa ${quitarAcentos(widget.nombreNegocio)}.png',
-          width: w,
-          height: 300,
+        child: imagenMapa(
+          rutaImagen: '${widget.direccionImagen}${quitarAcentos(widget.nombreNegocio)}/Mapa ${quitarAcentos(widget.nombreNegocio)}.png',
+        ),
+      ),
+    );
+  }
+
+  imagenMapa({
+    required String rutaImagen,
+  }){
+    return CachedNetworkImage(
+      imageUrl: rutaImagen,
+      imageBuilder: contenedorImagenMapa,
+      placeholder: (context, url) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      errorWidget: errorCarga,
+    );
+  }
+
+  Widget contenedorImagenMapa(BuildContext context, ImageProvider<Object> imageProvider) {
+    return Container(
+      width: w,
+      height: 300,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: imageProvider,
           fit: BoxFit.contain,
         ),
       ),

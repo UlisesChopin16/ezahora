@@ -3,7 +3,6 @@ import 'package:ezahora/constants/colors.dart';
 import 'package:ezahora/models/negocios_model.dart';
 import 'package:ezahora/views/negocios_view.dart';
 import 'package:flutter/material.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class ListaCategoriaComponent extends StatefulWidget {
 
