@@ -4,8 +4,6 @@ import 'package:ezahora/views/image_view.dart';
 import 'package:flutter/material.dart';
 
 
-// tenemos que adaptarlo a una pequeña reseña
-// al momento de tocarlo lanzara la pagina de imagenes negocios para que vean mas grande las pagina
 
 class ListaCategoriaInfoComponent extends StatefulWidget {
 
