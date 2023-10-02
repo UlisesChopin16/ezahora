@@ -31,25 +31,29 @@ class _EzSplashViewState extends State<EzSplashView> {
   void initState() {
     super.initState();
 
+    // cambiamos el tamaño del logo de ezahora
     Future.delayed(const Duration(seconds: 1)).then((value) => (
       setState(() {
-        heightValue = 150;
-        widthValue = 150;
+        heightValue = 180;
+        widthValue = 180;
       })
     ));
 
+    // cambiamos la opacidad del logo de ezahora
     Future.delayed(const Duration(milliseconds: 1600)).then((value) => (
       setState(() {
         opacityValue = 1;
       })
     ));
 
+    // cambiamos la opacidad del fondo
     Future.delayed(const Duration(milliseconds: 800)).then((value) => (
       setState(() {
         opacityValue2 = 1;
       })
     ));
     
+    // despues de 4 segundos cambiamos de pagina
     Future.delayed(const Duration(seconds: 4)).then((value) => (
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MenuPrincipal(),))
     ));
@@ -58,6 +62,8 @@ class _EzSplashViewState extends State<EzSplashView> {
 
   @override
   Widget build(BuildContext context) {
+
+    // obtenemos el tamaño de la pantalla
     getScreenSize();
     return  Scaffold(
       body: SafeArea(      
@@ -66,11 +72,15 @@ class _EzSplashViewState extends State<EzSplashView> {
           child: Stack(
             alignment: Alignment.center,
             children: [
+              // fondo de la pantalla
               fondoOpacoAnimado(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // logo de ezahora
                   logoEZAnimado(),
+
+                  // palabra ezahora
                   palabraEZAhoraAnimado(),
                 ],
               ),
@@ -83,6 +93,7 @@ class _EzSplashViewState extends State<EzSplashView> {
   }
 
   fondoOpacoAnimado(){
+    // con este widget hacemos que el fondo se vea mas suave
     return AnimatedOpacity(
       opacity: opacityValue2, 
       duration: const Duration(milliseconds: 500),
@@ -97,10 +108,12 @@ class _EzSplashViewState extends State<EzSplashView> {
   }
 
   logoEZAnimado(){
+    // con este widget hacemos que el logo vaya apareciendo gradualmente
     return AnimatedOpacity(
       duration: const Duration(seconds: 1),
       opacity: opacityValue,
       curve: Curves.easeInOut,
+      // con este widget hacemos que el logo vaya creciendo gradualmente
       child: AnimatedContainer(
         duration: const Duration(seconds: 1),
         height: heightValue,
@@ -115,6 +128,7 @@ class _EzSplashViewState extends State<EzSplashView> {
   }
 
   palabraEZAhoraAnimado(){
+    // con este widget hacemos que la palabra ezahora se vea mas suave
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 1500),
       opacity: opacityValue,

@@ -29,7 +29,8 @@ class ListaCategoriaImagenComponent extends StatefulWidget {
 
 class _ListaCategoriaImagenComponentState extends State<ListaCategoriaImagenComponent> {
   
-  String direccionImagen = '';
+  String direccionImagen = 'https://ezahora.com/turismo/APP1/';
+  String direccionCarpetaImagen = '';
 
   double w = 0;
   double h = 0;
@@ -46,12 +47,13 @@ class _ListaCategoriaImagenComponentState extends State<ListaCategoriaImagenComp
   void initState() {
     super.initState();
     
+    // direccion de la api donde se encuentran las imagenes
     if(widget.categoria == 3){
-      direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/Mercados/Mercado';
+      direccionCarpetaImagen = '${direccionImagen}Mercados/Mercado';
     }else if(widget.categoria == 5){
-      direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/Carnaval/Carnaval';
+      direccionCarpetaImagen = '${direccionImagen}Carnaval/Carnaval';
     }else if(widget.categoria == 9){
-      direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/Gastronomia/Gastronomia';
+      direccionCarpetaImagen = '${direccionImagen}Gastronomia/Gastronomia';
     }
     
   }
@@ -94,7 +96,7 @@ class _ListaCategoriaImagenComponentState extends State<ListaCategoriaImagenComp
                         right: 0,
                         bottom: 0,
                         child: image(
-                          rutaImagen: '$direccionImagen$index.jpg'
+                          rutaImagen: '$direccionCarpetaImagen$index.jpg'
                         )
                       ),
                     ],
@@ -172,28 +174,36 @@ class _ListaCategoriaImagenComponentState extends State<ListaCategoriaImagenComp
   }
 
   Widget errorCarga(BuildContext context, String url, Object error) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(
-          'assets/images/logo.png',
-          width: 100,
-          height: 100,
-          color: Colors.grey,
-          colorBlendMode: BlendMode.color,
-          fit: BoxFit.contain,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 100,
+                height: 100,
+                color: Colors.grey,
+                colorBlendMode: BlendMode.color,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Text(
+              'Imagen no disponible',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black.withOpacity(0.7)
+              )
+            )
+          ],
         ),
-        Text(
-          'Imagen no disponible',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black.withOpacity(0.7)
-          )
-        )
-      ],
+      ),
     );
 
   }

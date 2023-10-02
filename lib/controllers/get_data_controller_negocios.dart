@@ -1,15 +1,13 @@
-import 'package:ezahora/components/helper_dialog.dart';
 import 'package:ezahora/models/negocios_model.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class GetDataControllerNegocios extends GetxController{
-
-  var searchController = TextEditingController().obs;
   
   var isLoading = false.obs;
+  var error = false.obs;
 
+  // lista de negocios por categoria
   var getDataModelNegocios = GetDataModelNegocios(negocios: []).obs;
   var getDataModelNegociosCat1 = GetDataModelNegocios(negocios: []).obs;
   var getDataModelNegociosCat2 = GetDataModelNegocios(negocios: []).obs;
@@ -29,28 +27,41 @@ class GetDataControllerNegocios extends GetxController{
     8: 'Gatronomía Local',
   }.obs;
 
+
+  // metodo para obtener la ruta de la api
   rutaURL(String ruta) => 
-    Uri.parse('https://androidexd.000webhostapp.com/loginphp/EZAhora/$ruta.php');
+    Uri.parse('https://ezahora.com/EZAhora/$ruta.php');
 
-  
-
+  // metodo para obtener los datos de la api
   getDataNegocios() async {
+
+    error.value = false;
+    // dejamos el valor de isLoading en true para mostrar el loading
     isLoading.value = true;
+
     try{
+      // hacemos la peticion a la api
       var response = await http.post(
+
+        // nombre de la api
         rutaURL('empresas'),
       );
 
+      // limpiamos las listas
       getDataModelNegocios.value.negocios.clear();
       getDataModelNegociosCat1.value.negocios.clear();
       getDataModelNegociosCat2.value.negocios.clear();
       getDataModelNegociosCat4.value.negocios.clear();
       getDataModelNegociosCat7.value.negocios.clear();
       getDataModelNegociosCat8.value.negocios.clear();
-      
+
+      // agregamos los datos a la lista
       getDataModelNegocios.value = getDataModelNegociosFromJson(response.body);
+
+      // dejamos el valor de isLoading en false para ocultar el loading
       isLoading.value = false;
 
+      // recorremos la lista de negocios para separarlos por categoria
       for(int i = 0; i < getDataModelNegocios.value.negocios.length; i++){
         if(getDataModelNegocios.value.negocios[i].idCategoria == '1'){
           getDataModelNegociosCat1.value.negocios.add(getDataModelNegocios.value.negocios[i]);
@@ -65,25 +76,12 @@ class GetDataControllerNegocios extends GetxController{
         }
       }
     }catch(e){
-      print(e);
+      // dejamos el valor de isLoading en false para ocultar el loading
+      isLoading.value = false;
+      error.value = true;
+      // mostramos el error
+      // print(e);
     }
-  }
-
-  showLoading({String? nombre}) {
-    DialogsHelp.chargingLoading(nombre: nombre);
-  }
-
-  showMessage({String? title, String? content, int? opcion,IconData? icon}) {
-    DialogsHelp.alertDialog(
-      title: title, 
-      content: content, 
-      opcion: opcion, 
-      icon: icon,
-    );
-  }
-
-  hideLoading() {
-    DialogsHelp.closeDialog();
   }
 
 }

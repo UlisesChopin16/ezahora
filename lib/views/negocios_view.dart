@@ -55,7 +55,7 @@ class _NegociosViewState extends State<NegociosView> {
   double agrandar(){
     // si el nombre del negocio es mayor a 28 caracteres, agrandamos el tamaño del titulo
     if(widget.nombreNegocio.length > 32){
-      return 100;
+      return 80;
     }else{
       return 60;
     }
@@ -166,15 +166,16 @@ class _NegociosViewState extends State<NegociosView> {
 
       // lo ponemos fijo en la parte superior
       pinned: true,
-      backgroundColor: Colors.white,
+      backgroundColor: Palette.ezPink,
 
       // le damos una sombra
-      elevation: 4,
+      elevation: 2,
       leading: botonRegreso(),
 
       // le damos un efecto de blur al appbar al hacer scroll
       stretch: true,
       flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
         background: Stack(
           children: [
             Positioned(
@@ -299,28 +300,36 @@ class _NegociosViewState extends State<NegociosView> {
   }
 
   Widget errorCarga(BuildContext context, String url, Object error) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(
-          'assets/images/logo.png',
-          width: 100,
-          height: 100,
-          color: Colors.grey,
-          colorBlendMode: BlendMode.color,
-          fit: BoxFit.contain,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 100,
+                height: 100,
+                color: Colors.grey,
+                colorBlendMode: BlendMode.color,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Text(
+              'Imagen no disponible',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black.withOpacity(0.7)
+              )
+            )
+          ],
         ),
-        Text(
-          'Imagen no disponible',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black.withOpacity(0.7)
-          )
-        )
-      ],
+      ),
     );
 
   } 
@@ -355,7 +364,7 @@ class _NegociosViewState extends State<NegociosView> {
       ),
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Text(
             widget.nombreNegocio,
             textAlign: TextAlign.center,
@@ -400,6 +409,7 @@ class _NegociosViewState extends State<NegociosView> {
 
           // mapa
           mapaBotonNegocio(),
+          const SizedBox(height: 50,),
         ],
       )
     );

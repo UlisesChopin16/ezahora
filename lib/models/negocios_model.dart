@@ -68,19 +68,20 @@ class Negocios {
         json["redesSociales"] = 'No cuenta con redes sociales';
       }
 
+      // retornamos los datos del json
       return Negocios(
-        idUsuario: json["idUsuario"],
-        idCategoria: json["idCategoria"],
-        nombreComercial: json["nombreComercial"],
-        telefono: json["telefono"],
-        direccion: json["direccion"],
-        colonia: json["colonia"],
-        municipio: json["municipio"],
-        codigoPostal: json["codigoPostal"],
-        estado: json["estado"],
-        redesSociales: json["redesSociales"],
-        comentarios: json["comentarios"],
-        linkDireccion: json["linkDireccion"],
+        idUsuario: json["idUsuario"].toString(),
+        idCategoria: json["idCategoria"].toString(),
+        nombreComercial: json["nombreComercial"].toString(),
+        telefono: json["telefono"].toString(),
+        direccion: json["direccion"].toString(),
+        colonia: json["colonia"].toString(),
+        municipio: json["municipio"].toString(),
+        codigoPostal: json["codigoPostal"].toString(),
+        estado: json["estado"].toString(),
+        redesSociales: json["redesSociales"].toString(),
+        comentarios: json["comentarios"].toString(),
+        linkDireccion: json["linkDireccion"].toString(),
       );
     } 
 

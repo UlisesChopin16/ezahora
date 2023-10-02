@@ -173,15 +173,20 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
   }
 
 
-  cuerpoListado(){
+  Widget cuerpoListado(){
 
-    if(!getDataControllerN.isLoading.value){
-      return vistaListadoCategoria();
+    if(!getDataControllerN.error.value){
+      if(!getDataControllerN.isLoading.value){
+        return vistaListadoCategoria();
+      }else{
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
     }else{
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return errorOnServer();
     }
+    
   }
 
   vistaListadoCategoria(){
@@ -237,4 +242,39 @@ class _ListadoCategoriasViewState extends State<ListadoCategoriasView> {
     );
   }
 
+  // metodo para mostrar un widget de error si no se puede cargar la imagen
+  Widget errorOnServer() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 180,
+                height: 180,
+                color: Colors.grey,
+                colorBlendMode: BlendMode.color,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Text(
+              'Por favor intenta de nuevo más tarde',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.black.withOpacity(0.7)
+              )
+            )
+          ],
+        ),
+      ),
+    );
+
+  }
 }

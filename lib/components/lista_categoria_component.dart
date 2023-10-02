@@ -30,7 +30,9 @@ class ListaCategoriaComponent extends StatefulWidget {
 
 class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
   
-  String direccionImagen = '';  
+  // direccion de la api donde se encuentran las imagenes
+  String direccionImagen = 'https://ezahora.com/turismo/APP1/';  
+  String direccionCarpetaImagen = '';
 
 
   // Metodo para quitar acentos de una palabra
@@ -86,27 +88,29 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
 
   @override
   Widget build(BuildContext context){
+    // una vez que se obtienen los datos de la api se muestra la lista de negocios
     return ListView.builder(
       controller: widget.scrollController,
       itemCount: widget.contador,
       itemBuilder: (context, index) {
-
+        // obtenemos los datos de la lista de negocios
         final negocios = widget.listaNegocios![index];
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
           child: InkWell(
             onTap: () {
-              
+              // ruta de las carpetas de las imagenes
               setState(() {
                 if(widget.listaNegocios![index].idCategoria == '2'){
-                  direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/CERAMICAS/';
+                  direccionCarpetaImagen = '${direccionImagen}CERAMICAS/';
                 }else if(widget.listaNegocios![index].idCategoria == '7'){
-                  direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/Hospedaje/';
+                  direccionCarpetaImagen = '${direccionImagen}Hospedaje/';
                 }else if(widget.listaNegocios![index].idCategoria == '8'){
-                  direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/RestaurantesyBares/';
+                  direccionCarpetaImagen = '${direccionImagen}RestaurantesyBares/';
                 }
               });
 
+              // navegamos a la vista de negocios y enviamos los datos
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => NegociosView(
@@ -116,7 +120,7 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
                     telefono: negocios.telefono!, 
                     redSocial: negocios.redesSociales!, 
                     descripcion: negocios.comentarios, 
-                    direccionImagen: direccionImagen
+                    direccionImagen: direccionCarpetaImagen
                   )
                 )
               );
@@ -196,19 +200,22 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
     );
   }
 
-  imagenesCategoria({required int index}){   
+  imagenesCategoria({required int index}){  
+    // quitamos los acentos del nombre del negocio para obtener la ruta de la imagen 
     String  nombreNegocio = quitarAcentos(widget.listaNegocios![index].nombreComercial);
+
+    // retornamos la imagen dependiendo de la categoria
     if(widget.listaNegocios![index].idCategoria == '2'){
       return image(
-        rutaImagen: 'https://turismo.zapatamorelos.gob.mx/APP1/CERAMICAS/$nombreNegocio/${nombreNegocio}1.jpg'
+        rutaImagen: '${direccionImagen}CERAMICAS/$nombreNegocio/${nombreNegocio}1.jpg'
       );
     }else if(widget.listaNegocios![index].idCategoria == '7'){
       return image(
-        rutaImagen: 'https://turismo.zapatamorelos.gob.mx/APP1/Hospedaje/$nombreNegocio/${nombreNegocio}1.jpg'
+        rutaImagen: '${direccionImagen}Hospedaje/$nombreNegocio/${nombreNegocio}1.jpg'
       );
     }else if(widget.listaNegocios![index].idCategoria == '8'){
       return image(
-        rutaImagen: 'https://turismo.zapatamorelos.gob.mx/APP1/RestaurantesyBares/$nombreNegocio/${nombreNegocio}1.jpg',
+        rutaImagen: '${direccionImagen}RestaurantesyBares/$nombreNegocio/${nombreNegocio}1.jpg',
       );
     }
   }
@@ -237,6 +244,7 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
     );
   }
 
+  // metodos para mostrar la imagen de la api guardada en el cache
   Widget contenedorImagen(BuildContext context, ImageProvider<Object> imageProvider) {
     return Container(
       height: 250,
@@ -254,29 +262,38 @@ class _ListaCategoriaComponentState extends State<ListaCategoriaComponent> {
     );
   }
 
+  // metodo para mostrar un widget de error si no se puede cargar la imagen
   Widget errorCarga(BuildContext context, String url, Object error) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(
-          'assets/images/logo.png',
-          width: 100,
-          height: 100,
-          color: Colors.grey,
-          colorBlendMode: BlendMode.color,
-          fit: BoxFit.contain,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 100,
+                height: 100,
+                color: Colors.grey,
+                colorBlendMode: BlendMode.color,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Text(
+              'Imagen no disponible',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black.withOpacity(0.7)
+              )
+            )
+          ],
         ),
-        Text(
-          'Imagen no disponible',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black.withOpacity(0.7)
-          )
-        )
-      ],
+      ),
     );
 
   }

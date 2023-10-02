@@ -30,7 +30,9 @@ class ListaCategoriaInfoComponent extends StatefulWidget {
 
 class _ListaCategoriaInfoComponentState extends State<ListaCategoriaInfoComponent> {
   
-  String direccionImagen = '';  
+  // direccion de la api donde se encuentran las imagenes
+  String direccionImagen = 'https://ezahora.com/turismo/APP1/'; 
+  String direccionCarpetaImagen = '';
 
 
   // Metodo para quitar acentos de una palabra
@@ -101,11 +103,11 @@ class _ListaCategoriaInfoComponentState extends State<ListaCategoriaInfoComponen
             onTap: () {
               setState(() {
 
-                // direccion de la imagen
+                // ruta de las carpetas de las imagenes
                 if(negocios.idCategoria == '1'){
-                  direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/Atractivos/';
+                  direccionCarpetaImagen = '${direccionImagen}Atractivos/';
                 }else if(negocios.idCategoria == '4'){
-                  direccionImagen = 'https://turismo.zapatamorelos.gob.mx/APP1/Fiestas/';
+                  direccionCarpetaImagen = '${direccionImagen}Fiestas/';
                 }
               });
 
@@ -113,7 +115,7 @@ class _ListaCategoriaInfoComponentState extends State<ListaCategoriaInfoComponen
                 MaterialPageRoute(
                   builder: (context) => ImageView(
                     // mandamos la ruta de la imagen, el nombre del negocio y la posicion de la imagen
-                    imageUrl: '$direccionImagen${quitarAcentos(negocios.nombreComercial)}/${quitarAcentos(negocios.nombreComercial)}',
+                    imageUrl: '$direccionCarpetaImagen${quitarAcentos(negocios.nombreComercial)}/${quitarAcentos(negocios.nombreComercial)}',
                     title: negocios.nombreComercial,
                     categoria: negocios.idCategoria,
                     resena: negocios.comentarios,
@@ -187,14 +189,17 @@ class _ListaCategoriaInfoComponentState extends State<ListaCategoriaInfoComponen
 
   imagenesCategoria({required int index}){
     
+    // quitamos los acentos del nombre del negocio para poder acceder a la carpeta de la imagen
     String  nombreNegocio = quitarAcentos(widget.listaNegocios![index].nombreComercial);
+
+    // retornamos la imagen dependiendo de la categoria
     if(widget.listaNegocios![index].idCategoria == '1'){
       return image(
-        rutaImagen: 'https://turismo.zapatamorelos.gob.mx/APP1/Atractivos/$nombreNegocio/${nombreNegocio}1.jpg',
+        rutaImagen: '${direccionImagen}Atractivos/$nombreNegocio/${nombreNegocio}1.jpg',
       );
     }else if(widget.listaNegocios![index].idCategoria == '4'){
       return image(
-        rutaImagen: 'https://turismo.zapatamorelos.gob.mx/APP1/Fiestas/$nombreNegocio/${nombreNegocio}1.jpg',
+        rutaImagen: '${direccionImagen}Fiestas/$nombreNegocio/${nombreNegocio}1.jpg',
       );
     }
   }
@@ -225,6 +230,7 @@ class _ListaCategoriaInfoComponentState extends State<ListaCategoriaInfoComponen
     );
   }
 
+  // metodo para mostrar la imagen guardada en cache
   Widget contenedorImagen(BuildContext context, ImageProvider<Object> imageProvider) {
     return Container(
       height: 250,
@@ -242,29 +248,38 @@ class _ListaCategoriaInfoComponentState extends State<ListaCategoriaInfoComponen
     );
   }
 
+  // metodo para mostrar el error de la imagen
   Widget errorCarga(BuildContext context, String url, Object error) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(
-          'assets/images/logo.png',
-          width: 100,
-          height: 100,
-          color: Colors.grey,
-          colorBlendMode: BlendMode.color,
-          fit: BoxFit.contain,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 100,
+                height: 100,
+                color: Colors.grey,
+                colorBlendMode: BlendMode.color,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Text(
+              'Imagen no disponible',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black.withOpacity(0.7)
+              )
+            )
+          ],
         ),
-        Text(
-          'Imagen no disponible',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black.withOpacity(0.7)
-          )
-        )
-      ],
+      ),
     );
 
   }

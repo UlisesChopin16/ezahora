@@ -31,6 +31,8 @@ class _ImageViewState extends State<ImageView> {
   // controlador de la pagina
   PageController pageController = PageController();
 
+  int indexRegreso = 0;
+
   @override
   void initState() {
     super.initState();
@@ -83,10 +85,36 @@ class _ImageViewState extends State<ImageView> {
   appBar(){
     return AppBar(
       backgroundColor: Palette.ezPink,
-      title: Text(widget.title)
+      title: Text(widget.title),
+      leading: botonRegreso(),
     );
   }
 
+  botonRegreso(){
+    return IconButton(
+      onPressed: () {
+        // regresar a la pantalla anterior
+        Navigator.of(context).pop(indexRegreso);
+      },
+      icon: Container(
+        // le ponemos un color de fondo para que se vea el circulo
+        decoration: const BoxDecoration(
+          color: Colors.white,
+
+          // le damos forma de circulo
+          shape: BoxShape.circle
+        ),
+
+        // elegimos el icono, le damos tamaño y color
+        child: Icon(
+          Icons.arrow_back_rounded,
+          color: Palette.ezPink,
+          size: 35,
+        )
+      ),
+
+    );
+  }
 
   construccionImagenes(){
     return SizedBox(
@@ -97,6 +125,7 @@ class _ImageViewState extends State<ImageView> {
         itemCount: widget.categoria == '1' || widget.categoria == '4' ? 2 : 5,
         itemBuilder: (context, index) {
           index++;
+          indexRegreso = index - 1;
           return image(
             rutaImagen: '${widget.imageUrl}$index.jpg',
           );
@@ -132,28 +161,36 @@ class _ImageViewState extends State<ImageView> {
   }
 
   Widget errorCarga(BuildContext context, String url, Object error) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(
-          'assets/images/logo.png',
-          width: 100,
-          height: 100,
-          color: Colors.grey,
-          colorBlendMode: BlendMode.color,
-          fit: BoxFit.contain,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 100,
+                height: 100,
+                color: Colors.grey,
+                colorBlendMode: BlendMode.color,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Text(
+              'Imagen no disponible',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black.withOpacity(0.7)
+              )
+            )
+          ],
         ),
-        Text(
-          'Imagen no disponible',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black.withOpacity(0.7)
-          )
-        )
-      ],
+      ),
     );
 
   }
