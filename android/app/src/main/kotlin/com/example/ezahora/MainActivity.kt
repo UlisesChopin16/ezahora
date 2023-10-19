@@ -1,4 +1,4 @@
-package ezah.dif.ezahora
+package ezah.difeza.ezahora
 
 import io.flutter.embedding.android.FlutterActivity
 
